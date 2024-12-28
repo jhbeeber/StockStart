@@ -80,7 +80,7 @@ function PrivacyPolicy() {
         <div className="section">
           <h2>Contact Us</h2>
           <p>
-            If you have any questions about this Privacy Policy, please contact us at stockstart@gmail.com.
+            If you have any questions about this Privacy Policy, please contact us at stockstart@outlook.com.
           </p>
         </div>
       </main>

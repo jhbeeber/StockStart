@@ -83,7 +83,7 @@ function Terms() {
         <div className="section">
           <h2>Contact Us</h2>
           <p>
-            If you have any questions about these terms and conditions, please contact us at stockstart@gmail.com.
+            If you have any questions about these terms and conditions, please contact us at stockstart@outlook.com.
           </p>
         </div>
       </main>
