@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './HomePage.css';
 
 function HomePage() {
@@ -23,7 +24,7 @@ function HomePage() {
         <div className="nav-links">
           <a href="#features">Features</a>
           <a href="#about">About</a>
-          <button className="login-btn">Login</button>
+          <Link to="/login" className="login-btn">Login</Link>
           <button className="signup-btn">Get Started</button>
         </div>
       </nav>
