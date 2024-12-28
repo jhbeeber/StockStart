@@ -1,13 +1,42 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from './supabaseClient';
 import './Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      const { data: users, error: userError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('user_email', email)
+        .eq('user_password', password);
+  
+      if (userError) {
+        console.error('Login error:', userError.message);
+        setError('Invalid email or password');
+        return;
+      }
+  
+      if (users && users.length === 1) {
+        console.log('Login successful');
+        navigate('/'); // Temporary redirect to home page
+      } else if (users && users.length === 0) {
+        console.log('No matching user found');
+        setError('Invalid email or password');
+      }
+  
+    } catch (error) {
+      console.error('Detailed error:', error);
+      setError('Connection error - please try again');
+    }
   };
 
   return (
@@ -36,6 +65,7 @@ function Login() {
               required
             />
           </div>
+          {error && <div className="error-message">{error}</div>}
           <button type="submit" className="login-submit-btn">Sign In</button>
         </form>
         <p className="signup-link">
