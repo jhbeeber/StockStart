@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 import './HomePage.css';
 
 function HomePage() {
@@ -17,18 +17,7 @@ function HomePage() {
 
   return (
     <div className="home">
-      <nav className="navbar">
-      <div className="logo">
-        <span>Stock</span><span className="logo-accent">Start</span>
-        </div>
-        <div className="nav-links">
-          <a href="#features">Features</a>
-          <a href="#about">About</a>
-          <Link to="/login" className="login-btn">Login</Link>
-          <button className="signup-btn">Get Started</button>
-        </div>
-      </nav>
-
+      <Navbar />
       <main className="hero">
         <div className="hero-content fade-in">
           <h1>Your Journey to Smart Investing <br/>
