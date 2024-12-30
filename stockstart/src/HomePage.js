@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Navbar from './Navbar';
+import { Link } from 'react-router-dom';
 import './HomePage.css';
 
 function HomePage() {
@@ -24,9 +25,12 @@ function HomePage() {
             <span className="gradient-text">Starts Here</span>
           </h1>
           <p>Personalized stock recommendations based on your goals</p>
-          <button className="cta-btn">Start Smart Investing Today
-            <span className="btn-arrow">→</span>
-          </button>
+          <Link to="/signup">
+            <button className="cta-btn">
+              Start Smart Investing Today
+              <span className="btn-arrow">→</span>
+            </button>
+          </Link>
         </div>
         <div className="hero-background"></div>
       </main>
