@@ -27,7 +27,7 @@ function Signup() {
         throw new Error('Email already registered');
       }
   
-      const { error: dbError } = await supabase
+      const { data: newUser, error: dbError } = await supabase
         .from('users')
         .insert([
           {
@@ -35,11 +35,13 @@ function Signup() {
             user_email: email,
             user_password: password,
           }
-        ]);
+        ])
+        .select()
+        .single();
   
       if (dbError) throw dbError;
   
-      navigate('/setup-goals');
+      navigate(`/setup-goals/${newUser.user_id}`);
     } catch (error) {
       setError(error.message);
     } finally {

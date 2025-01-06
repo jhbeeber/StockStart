@@ -7,15 +7,18 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
     try {
       const { data: users, error: userError } = await supabase
         .from('users')
-        .select('*')
+        .select('user_id, user_email, user_password')
         .eq('user_email', email)
         .eq('user_password', password);
   
@@ -27,8 +30,8 @@ function Login() {
   
       if (users && users.length === 1) {
         console.log('Login successful');
-        navigate('/'); // Temporary redirect to home page
-      } else if (users && users.length === 0) {
+        navigate(`/dashboard/${users[0].user_id}`);
+      } else {
         console.log('No matching user found');
         setError('Invalid email or password');
       }
@@ -36,6 +39,8 @@ function Login() {
     } catch (error) {
       console.error('Detailed error:', error);
       setError('Connection error - please try again');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,7 +71,13 @@ function Login() {
             />
           </div>
           {error && <div className="error-message">{error}</div>}
-          <button type="submit" className="login-submit-btn">Sign In</button>
+          <button 
+            type="submit" 
+            className="login-submit-btn"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Signing in...' : 'Sign In'}
+          </button>
         </form>
         <p className="signup-link">
           Don't have an account? <Link to="/signup">Sign up</Link>
