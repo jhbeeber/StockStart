@@ -11,8 +11,69 @@ function Suggestions() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [savedStocks, setSavedStocks] = useState(new Set());
+  const [savingStocks, setSavingStocks] = useState(new Set());
 
   const FMP_API_KEY = process.env.REACT_APP_FMP_API_KEY;
+
+  const handleSaveStock = async (stock) => {
+    if (savingStocks.has(stock.symbol)) return;
+    
+    setSavingStocks(prev => new Set([...prev, stock.symbol]));
+    
+    try {
+      const { error } = await supabase
+        .from('saved_stocks')
+        .insert([{
+          user_id: parseInt(userId, 10),
+          symbol: stock.symbol,
+          company_name: stock.companyName,
+          price: stock.price,
+          market_cap: stock.marketCap,
+          beta: stock.beta,
+          sector: stock.sector
+        }]);
+
+      if (error) throw error;
+
+      setSavedStocks(prev => new Set([...prev, stock.symbol]));
+      
+      setTimeout(() => {
+        setSavingStocks(prev => {
+          const next = new Set(prev);
+          next.delete(stock.symbol);
+          return next;
+        });
+      }, 1000);
+
+    } catch (err) {
+      console.error('Error saving stock:', err);
+      setSavingStocks(prev => {
+        const next = new Set(prev);
+        next.delete(stock.symbol);
+        return next;
+      });
+    }
+  };
+
+  useEffect(() => {
+    const fetchSavedStocks = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('saved_stocks')
+          .select('symbol')
+          .eq('user_id', userId);
+
+        if (error) throw error;
+
+        setSavedStocks(new Set(data.map(stock => stock.symbol)));
+      } catch (err) {
+        console.error('Error fetching saved stocks:', err);
+      }
+    };
+
+    fetchSavedStocks();
+  }, [userId]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -216,7 +277,28 @@ function Suggestions() {
               <div key={stock.symbol} className="stock-card">
                 <div className="stock-header">
                   <h3>{stock.symbol}</h3>
-                  <span className="stock-price">${stock.price}</span>
+                  <button
+                    className={`save-stock-btn ${savedStocks.has(stock.symbol) ? 'saved' : ''} ${savingStocks.has(stock.symbol) ? 'saving' : ''}`}
+                    onClick={() => handleSaveStock(stock)}
+                    disabled={savedStocks.has(stock.symbol) || savingStocks.has(stock.symbol)}
+                  >
+                    {savedStocks.has(stock.symbol) ? (
+                      <>
+                        <span className="save-icon">✓</span>
+                        Saved
+                      </>
+                    ) : savingStocks.has(stock.symbol) ? (
+                      <>
+                        <span className="save-icon rotating">↻</span>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <span className="save-icon">+</span>
+                        Save
+                      </>
+                    )}
+                  </button>
                 </div>
                 <div className="stock-details">
                   <p className="company-name">{stock.companyName}</p>
