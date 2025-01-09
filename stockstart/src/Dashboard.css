@@ -167,6 +167,121 @@
   color: #dc2626;
 }
 
+.saved-stocks-section {
+  margin-bottom: 4rem;
+}
+
+.saved-stocks-section h2 {
+  color: #1e293b;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.no-stocks-message {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.no-stocks-message p {
+  color: #64748b;
+  margin: 0.5rem 0;
+}
+
+.saved-stocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.saved-stock-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.3s ease;
+}
+
+.saved-stock-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.saved-stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.saved-stock-header h3 {
+  color: #004d24;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.delete-stock-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-stock-btn:hover:not(:disabled) {
+  background: #fecaca;
+  transform: scale(1.1);
+}
+
+.delete-stock-btn.deleting {
+  background: #e2e8f0;
+  color: #64748b;
+  cursor: wait;
+}
+
+.delete-icon {
+  line-height: 1;
+}
+
+.delete-icon.rotating {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.saved-stock-details {
+  color: #1e293b;
+}
+
+.saved-stock-details .company-name {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.saved-stock-details .sector {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
 @media (max-width: 768px) {
   .dashboard-content {
     padding: 6rem 1rem 2rem;
@@ -177,6 +292,10 @@
   }
 
   .stocks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .saved-stocks-grid {
     grid-template-columns: 1fr;
   }
 }
