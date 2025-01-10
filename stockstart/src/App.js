@@ -30,6 +30,8 @@ function App() {
           <Route path="/setup-goals/:userId" element={<SetupGoals />} />
           <Route path="/dashboard/:userId" element={<Dashboard />} />
           <Route path="/suggestions/:userId" element={<Suggestions />} />
+          <Route path="/privacy-policy/:userId" element={<PrivacyPolicy />} />
+          <Route path="/terms/:userId" element={<Terms />} />
         </Routes>
         <Footer />
       </div>
