@@ -12,6 +12,7 @@ import PrivacyPolicy from './PrivacyPolicy';
 import Terms from './Terms';
 import Dashboard from './Dashboard';
 import Suggestions from './Suggestions';
+import Settings from './Settings';
 import './App.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/suggestions/:userId" element={<Suggestions />} />
           <Route path="/privacy-policy/:userId" element={<PrivacyPolicy />} />
           <Route path="/terms/:userId" element={<Terms />} />
+          <Route path="/settings/:userId" element={<Settings />} />
         </Routes>
         <Footer />
       </div>

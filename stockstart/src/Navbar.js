@@ -27,7 +27,7 @@ function Navbar() {
             </Link>
             <Link 
               to={`/settings/${userId}`} 
-              className="settings-btn">
+              className={location.pathname === `/settings/${userId}` ? 'active' : ''}>
               Settings
             </Link>
           </>
