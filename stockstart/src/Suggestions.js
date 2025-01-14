@@ -6,7 +6,7 @@ import './Suggestions.css';
 
 function Suggestions() {
   const { userId } = useParams();
-  const [userPreferences, setUserPreferences] = useState(null);
+  const [setUserPreferences] = useState(null);
   const [stockSuggestions, setStockSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -89,42 +89,13 @@ function Suggestions() {
     }
   };
 
-  useEffect(() => {
-    if (!FMP_API_KEY) {
-      setError('FMP API key is missing. Please check your environment variables.');
-      setLoading(false);
-      return;
-    }
-
-    const fetchUserPreferences = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('user_preferences')
-          .select('*')
-          .eq('user_id', userId)
-          .single();
-
-        if (error) throw error;
-        setUserPreferences(data);
-        await fetchStockSuggestions(data);
-      } catch (err) {
-        setError('Error fetching user preferences');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserPreferences();
-  }, [userId, FMP_API_KEY]);
-
   const fetchStockSuggestions = useCallback(async () => {
     if (!FMP_API_KEY) {
       setError('FMP API key is missing. Please check your environment variables.');
       setLoading(false);
       return;
     }
-
+  
     try {
       const { data: preferences, error } = await supabase
         .from('user_preferences')
@@ -182,7 +153,36 @@ function Suggestions() {
     } finally {
       setLoading(false);
     }
-  }, [userId, FMP_API_KEY]);
+  }, [userId, FMP_API_KEY, setUserPreferences]);
+
+  useEffect(() => {
+    if (!FMP_API_KEY) {
+      setError('FMP API key is missing. Please check your environment variables.');
+      setLoading(false);
+      return;
+    }
+
+    const fetchUserPreferences = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('user_preferences')
+          .select('*')
+          .eq('user_id', userId)
+          .single();
+
+        if (error) throw error;
+        setUserPreferences(data);
+        await fetchStockSuggestions(data);
+      } catch (err) {
+        setError('Error fetching user preferences');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserPreferences();
+  }, [userId, FMP_API_KEY, fetchStockSuggestions, setUserPreferences]);
 
   useEffect(() => {
     fetchStockSuggestions();
