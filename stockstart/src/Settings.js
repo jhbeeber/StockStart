@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import Navbar from './Navbar';
@@ -29,16 +29,16 @@ function Settings() {
     navigate('/');
   };
 
-  const fetchUserPreferences = async () => {
+  const fetchUserPreferences = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('user_preferences')
         .select('*')
         .eq('user_id', userId)
         .single();
-
+  
       if (error) throw error;
-
+  
       setPreferences({
         investmentGoal: data.investment_goal || '',
         riskTolerance: data.risk_tolerance || '',
@@ -52,7 +52,11 @@ function Settings() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+  
+  useEffect(() => {
+    fetchUserPreferences();
+  }, [fetchUserPreferences]);
 
   const handlePreferenceChange = (field, value) => {
     setPreferences(prev => ({
