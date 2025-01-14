@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import Navbar from './Navbar';
@@ -80,50 +80,7 @@ function Suggestions() {
     setError(null);
     
     try {
-      const industries = userPreferences.preferred_industries.map(ind => 
-        ({
-          'tech': 'Technology',
-          'healthcare': 'Healthcare',
-          'finance': 'Financial Services',
-          'consumer': 'Consumer Cyclical',
-          'energy': 'Energy',
-          'real-estate': 'Real Estate'
-        }[ind] || ind)
-      );
-  
-      const stockPromises = industries.map(industry => {
-        const url = new URL('https://financialmodelingprep.com/api/v3/stock-screener');
-        
-        const params = {
-          apikey: FMP_API_KEY,
-          marketCapMoreThan: '1000000000',
-          betaMoreThan: '1',
-          volumeMoreThan: '10000',
-          sector: industry
-        };
-        
-        url.search = new URLSearchParams(params).toString();
-        
-        return fetch(url)
-          .then(res => {
-            if (!res.ok) {
-              throw new Error(`API response error: ${res.status}`);
-            }
-            return res.json();
-          });
-      });
-  
-      const results = await Promise.all(stockPromises);
-      let allStocks = results.flat().filter(stock => stock);
-  
-      if (!Array.isArray(allStocks) || allStocks.length === 0) {
-        throw new Error('No stocks found matching your criteria');
-      }
-  
-      const filteredStocks = filterStocksByPreferences(allStocks, userPreferences);
-      const shuffled = filteredStocks.sort(() => 0.5 - Math.random());
-      setStockSuggestions(shuffled.slice(0, 6));
-      
+      await fetchStockSuggestions();
     } catch (err) {
       setError('Error refreshing suggestions: ' + err.message);
       console.error('Refresh error:', err);
@@ -161,8 +118,22 @@ function Suggestions() {
     fetchUserPreferences();
   }, [userId, FMP_API_KEY]);
 
-  const fetchStockSuggestions = async (preferences) => {
+  const fetchStockSuggestions = useCallback(async () => {
+    if (!FMP_API_KEY) {
+      setError('FMP API key is missing. Please check your environment variables.');
+      setLoading(false);
+      return;
+    }
+
     try {
+      const { data: preferences, error } = await supabase
+        .from('user_preferences')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (error) throw error;
+
       const industries = preferences.preferred_industries.map(ind => 
         ({
           'tech': 'Technology',
@@ -173,10 +144,9 @@ function Suggestions() {
           'real-estate': 'Real Estate'
         }[ind] || ind)
       );
-  
+
       const stockPromises = industries.map(industry => {
         const url = new URL('https://financialmodelingprep.com/api/v3/stock-screener');
-        
         const params = {
           apikey: FMP_API_KEY,
           marketCapMoreThan: '1000000000',
@@ -195,21 +165,28 @@ function Suggestions() {
             return res.json();
           });
       });
-  
+
       const results = await Promise.all(stockPromises);
       let allStocks = results.flat().filter(stock => stock);
-  
+
       if (!Array.isArray(allStocks) || allStocks.length === 0) {
         throw new Error('No stocks found matching your criteria');
       }
-  
+
       const filteredStocks = filterStocksByPreferences(allStocks, preferences);
       setStockSuggestions(filteredStocks.slice(0, 6));
+      setUserPreferences(preferences);
     } catch (err) {
       setError('Error fetching stock suggestions: ' + err.message);
       console.error('Stock API error:', err);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [userId, FMP_API_KEY]);
+
+  useEffect(() => {
+    fetchStockSuggestions();
+  }, [fetchStockSuggestions]);
 
   const filterStocksByPreferences = (stocks, preferences) => {
     if (!Array.isArray(stocks)) {
