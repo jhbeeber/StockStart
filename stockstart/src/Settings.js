@@ -20,43 +20,39 @@ function Settings() {
   });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  useEffect(() => {
-    fetchUserPreferences();
-  }, [userId]);
+const fetchUserPreferences = useCallback(async () => {
+  try {
+    const { data, error } = await supabase
+      .from('user_preferences')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
 
-  const handleLogout = () => {
-    localStorage.removeItem('userSession');
-    navigate('/');
-  };
+    if (error) throw error;
 
-  const fetchUserPreferences = useCallback(async () => {
-    try {
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-  
-      if (error) throw error;
-  
-      setPreferences({
-        investmentGoal: data.investment_goal || '',
-        riskTolerance: data.risk_tolerance || '',
-        timeHorizon: data.time_horizon || '',
-        preferredIndustries: data.preferred_industries || [],
-        investmentAmount: data.investment_amount || ''
-      });
-    } catch (err) {
-      console.error('Error fetching preferences:', err);
-      setError('Failed to load preferences');
-    } finally {
-      setLoading(false);
-    }
-  }, [userId]);
-  
-  useEffect(() => {
-    fetchUserPreferences();
-  }, [fetchUserPreferences]);
+    setPreferences({
+      investmentGoal: data.investment_goal || '',
+      riskTolerance: data.risk_tolerance || '',
+      timeHorizon: data.time_horizon || '',
+      preferredIndustries: data.preferred_industries || [],
+      investmentAmount: data.investment_amount || ''
+    });
+  } catch (err) {
+    console.error('Error fetching preferences:', err);
+    setError('Failed to load preferences');
+  } finally {
+    setLoading(false);
+  }
+}, [userId]);
+
+useEffect(() => {
+  fetchUserPreferences();
+}, [fetchUserPreferences]); 
+
+const handleLogout = () => {
+  localStorage.removeItem('userSession');
+  navigate('/');
+};
 
   const handlePreferenceChange = (field, value) => {
     setPreferences(prev => ({
