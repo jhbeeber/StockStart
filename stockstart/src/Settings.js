@@ -20,34 +20,34 @@ function Settings() {
   });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-const fetchUserPreferences = useCallback(async () => {
-  try {
-    const { data, error } = await supabase
-      .from('user_preferences')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
+  const fetchUserPreferences = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_preferences')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    setPreferences({
-      investmentGoal: data.investment_goal || '',
-      riskTolerance: data.risk_tolerance || '',
-      timeHorizon: data.time_horizon || '',
-      preferredIndustries: data.preferred_industries || [],
-      investmentAmount: data.investment_amount || ''
-    });
-  } catch (err) {
-    console.error('Error fetching preferences:', err);
-    setError('Failed to load preferences');
-  } finally {
-    setLoading(false);
-  }
-}, [userId]);
+      setPreferences({
+        investmentGoal: data.investment_goal || '',
+        riskTolerance: data.risk_tolerance || '',
+        timeHorizon: data.time_horizon || '',
+        preferredIndustries: data.preferred_industries || [],
+        investmentAmount: data.investment_amount || ''
+      });
+    } catch (err) {
+      console.error('Error fetching preferences:', err);
+      setError('Failed to load preferences');
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
 
-useEffect(() => {
-  fetchUserPreferences();
-}, [fetchUserPreferences]); 
+  useEffect(() => {
+    fetchUserPreferences();
+  }, [fetchUserPreferences]);
 
 const handleLogout = () => {
   localStorage.removeItem('userSession');
