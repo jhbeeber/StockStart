@@ -40,6 +40,11 @@ function Signup() {
         .single();
   
       if (dbError) throw dbError;
+
+      localStorage.setItem('userSession', JSON.stringify({
+        userId: newUser.user_id,
+        email: newUser.user_email
+      }));
   
       navigate(`/setup-goals/${newUser.user_id}`);
     } catch (error) {

@@ -1,9 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
+import FirstVisitPopup from './FirstVisitPopup';
 import './HomePage.css';
 
 function HomePage() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('hasVisited');
+    if (!hasVisited) {
+      setShowPopup(true);
+      localStorage.setItem('hasVisited', 'true');
+    }
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -18,6 +29,7 @@ function HomePage() {
 
   return (
     <div className="home">
+      {showPopup && <FirstVisitPopup onClose={() => setShowPopup(false)} />}
       <Navbar />
       <main className="hero">
         <div className="hero-content fade-in">

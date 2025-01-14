@@ -24,6 +24,11 @@ function Settings() {
     fetchUserPreferences();
   }, [userId]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('userSession');
+    navigate('/');
+  };
+
   const fetchUserPreferences = async () => {
     try {
       const { data, error } = await supabase
@@ -214,6 +219,16 @@ function Settings() {
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
+        </section>
+
+        <section className="logout-section">
+          <h2>User Session</h2>
+          <button 
+            className="logout-btn" 
+            onClick={handleLogout}
+          >
+            Log Out
+          </button>
         </section>
 
         <section className="danger-zone">

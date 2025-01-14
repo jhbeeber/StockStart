@@ -240,6 +240,38 @@
   color: #1e293b;
 }
 
+.logout-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  margin-bottom: 3rem;
+}
+
+.logout-section h2 {
+  color: #1e293b;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.logout-btn {
+  padding: 0.75rem 1.5rem;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 0.5rem;
+  color: #1e293b;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.logout-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
 @media (max-width: 768px) {
   .settings-content {
     padding: 6rem 1rem 2rem;

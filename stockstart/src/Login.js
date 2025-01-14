@@ -29,6 +29,11 @@ function Login() {
       }
   
       if (users && users.length === 1) {
+        localStorage.setItem('userSession', JSON.stringify({
+          userId: users[0].user_id,
+          email: users[0].user_email
+        }));
+        
         console.log('Login successful');
         navigate(`/dashboard/${users[0].user_id}`);
       } else {
