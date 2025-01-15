@@ -6,7 +6,8 @@ import './Suggestions.css';
 
 function Suggestions() {
   const { userId } = useParams();
-  const [setUserPreferences] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [userPreferences, setUserPreferences] = useState(null);
   const [stockSuggestions, setStockSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -76,6 +77,7 @@ function Suggestions() {
   }, [userId]);
 
   const handleRefresh = async () => {
+    console.log('handleRefresh called');
     setRefreshing(true);
     setError(null);
     
@@ -90,6 +92,8 @@ function Suggestions() {
   };
 
   const fetchStockSuggestions = useCallback(async () => {
+    console.log('fetchStockSuggestions called');
+    
     if (!FMP_API_KEY) {
       setError('FMP API key is missing. Please check your environment variables.');
       setLoading(false);
@@ -102,9 +106,11 @@ function Suggestions() {
         .select('*')
         .eq('user_id', userId)
         .single();
-
+  
       if (error) throw error;
-
+  
+      console.log('User preferences:', preferences);
+  
       const industries = preferences.preferred_industries.map(ind => 
         ({
           'tech': 'Technology',
@@ -115,7 +121,7 @@ function Suggestions() {
           'real-estate': 'Real Estate'
         }[ind] || ind)
       );
-
+  
       const stockPromises = industries.map(industry => {
         const url = new URL('https://financialmodelingprep.com/api/v3/stock-screener');
         const params = {
@@ -136,17 +142,23 @@ function Suggestions() {
             return res.json();
           });
       });
-
+  
       const results = await Promise.all(stockPromises);
       let allStocks = results.flat().filter(stock => stock);
-
+  
+      console.log('Fetched stocks:', allStocks);
+  
       if (!Array.isArray(allStocks) || allStocks.length === 0) {
         throw new Error('No stocks found matching your criteria');
       }
-
+  
       const filteredStocks = filterStocksByPreferences(allStocks, preferences);
-      setStockSuggestions(filteredStocks.slice(0, 6));
+      console.log('Filtered stocks:', filteredStocks);
+
+      const shuffledStocks = filteredStocks.sort(() => 0.5 - Math.random());
+      setStockSuggestions(shuffledStocks.slice(0, 6));
       setUserPreferences(preferences);
+      console.log('Updated stock suggestions:', shuffledStocks.slice(0, 6));
     } catch (err) {
       setError('Error fetching stock suggestions: ' + err.message);
       console.error('Stock API error:', err);
@@ -154,6 +166,10 @@ function Suggestions() {
       setLoading(false);
     }
   }, [userId, FMP_API_KEY, setUserPreferences]);
+  
+  useEffect(() => {
+    fetchStockSuggestions();
+  }, [fetchStockSuggestions]);
 
   useEffect(() => {
     if (!FMP_API_KEY) {
@@ -246,7 +262,7 @@ function Suggestions() {
             {refreshing ? 'Refreshing...' : 'Get New Suggestions'}
           </button>
         </div>
-
+  
         <section className="stock-suggestions">
           <h2>Recommended Stocks</h2>
           <div className="stocks-grid">
