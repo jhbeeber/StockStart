@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Curl Supabase Health Endpoint
         run: |
-          curl -sSf ${{ secrets.REACT_APP_SUPABASE_URL }}/rest/v1/ || echo "Ping failed"
+          curl -sSf -H "apikey: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}" "${{ secrets.REACT_APP_SUPABASE_URL }}/rest/v1/" || echo "Ping failed"
