@@ -9,6 +9,6 @@ jobs:
   ping-supabase:
     runs-on: ubuntu-latest
     steps:
-      - name: Curl Supabase Health Endpoint
+      - name: Ping Supabase Health Check Table
         run: |
-          curl -sSf -H "apikey: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}" "${{ secrets.REACT_APP_SUPABASE_URL }}/rest/v1/" || echo "Ping failed"
+          curl -sSf -H "apikey: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}" "${{ secrets.REACT_APP_SUPABASE_URL }}/rest/v1/health_check?select=id&limit=1" || echo "Ping failed"
