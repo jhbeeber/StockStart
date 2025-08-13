@@ -24,6 +24,9 @@ function Footer() {
           <Link to={isLoggedIn && userId ? `/terms/${userId}` : '/terms'}>
             Terms & Conditions
           </Link>
+          <Link to={isLoggedIn && userId ? `/disclaimer/${userId}` : '/disclaimer'}>
+            Disclaimer
+          </Link>
         </div>
       </div>
     </footer>

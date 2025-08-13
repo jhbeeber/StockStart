@@ -8,7 +8,7 @@ function Terms() {
       <Navbar />
       <main className="policy-content">
         <h1>Terms & Conditions</h1>
-        <p className="last-updated">Last updated 12/28/2024</p>
+        <p className="last-updated">Last updated 08/13/2025</p>
 
         <div className="section">
           <h2>Introduction</h2>
@@ -76,7 +76,7 @@ function Terms() {
         <div className="section">
           <h2>9. Governing Law</h2>
           <p>
-            These terms and conditions are governed by and construed in accordance with the laws of Texas, United States, and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.
+            These terms and conditions are governed by and construed in accordance with the laws of the United States, and you irrevocably submit to the exclusive jurisdiction of the courts in the United States for any disputes arising from your use of the site.
           </p>
         </div>
 
