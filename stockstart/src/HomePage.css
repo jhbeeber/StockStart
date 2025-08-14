@@ -17,16 +17,10 @@
 
 .hero h1 {
   font-size: 2.5rem;
-  animation: glowPulse 3s ease-in-out infinite;
-  background: linear-gradient(
-    90deg, 
-    #00df68, #004d24, #00df68
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 8s linear infinite;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+  font-weight: 800;
 }
 
 .hero.loaded {
@@ -170,14 +164,10 @@
 }
 
 .features h2 {
-  font-size: 3rem;
+  color: #1e293b;
   margin-bottom: 4rem;
-  background: linear-gradient(45deg, #00df68, #004d24);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  position: relative;
-  display: inline-block;
+  font-size: 2.5rem;
+  font-weight: 700;
 }
 
 .features h2::after {
