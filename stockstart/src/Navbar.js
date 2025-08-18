@@ -10,6 +10,7 @@ function Navbar() {
                      location.pathname.includes('/suggestions') || 
                      location.pathname.includes('/settings') || 
                      (location.pathname.includes('/privacy-policy') && userId) || 
+                     (location.pathname.includes('/disclaimer') && userId) ||
                      (location.pathname.includes('/terms') && userId);
 
   const toggleMenu = () => {

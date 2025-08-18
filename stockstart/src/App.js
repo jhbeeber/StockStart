@@ -71,6 +71,15 @@ function ProtectedSettings() {
   );
 }
 
+function ProtectedDisclaimer() {
+  const { userId } = useParams();
+  return (
+    <ProtectedRoute userId={userId}>
+      <Disclaimer />
+    </ProtectedRoute>
+  );
+}
+
 function App() {
   return (
     <Router>
@@ -91,7 +100,7 @@ function App() {
           <Route path="/privacy-policy/:userId" element={<ProtectedPrivacyPolicy />} />
           <Route path="/terms/:userId" element={<ProtectedTerms />} />
           <Route path="/settings/:userId" element={<ProtectedSettings />} />
-          <Route path="/disclaimer/:userId" element={<Disclaimer />} />
+          <Route path="/disclaimer/:userId" element={<ProtectedDisclaimer />} />
         </Routes>
         <Footer />
       </div>
