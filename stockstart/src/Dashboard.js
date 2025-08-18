@@ -87,7 +87,7 @@ function Dashboard() {
     fetchUserPreferences();
   }, [userId, FMP_API_KEY]);
 
-  if (loading) return <div className="dashboard-loading">Loading...</div>;
+  if (loading) return <div className="dashboard-loading"></div>;
   if (error) return <div className="dashboard-error">{error}</div>;
 
   return (

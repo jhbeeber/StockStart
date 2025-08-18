@@ -13,6 +13,7 @@ function ProtectedRoute({ userId, children }) {
         
         if (!session) {
           setIsAuthorized(false);
+          setLoading(false);
           return;
         }
 
@@ -21,6 +22,7 @@ function ProtectedRoute({ userId, children }) {
 
         if (sessionUserId !== parseInt(userId)) {
           setIsAuthorized(false);
+          setLoading(false);
           return;
         }
 
@@ -32,12 +34,15 @@ function ProtectedRoute({ userId, children }) {
 
         if (error || !user) {
           setIsAuthorized(false);
+          setLoading(false);
         } else {
           setIsAuthorized(true);
+          setTimeout(() => {
+            setLoading(false);
+          }, 1000);
         }
       } catch (error) {
         setIsAuthorized(false);
-      } finally {
         setLoading(false);
       }
     };
@@ -46,7 +51,14 @@ function ProtectedRoute({ userId, children }) {
   }, [userId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        {children}
+        <div className="protected-loading-overlay">
+          <div className="protected-spinner"></div>
+        </div>
+      </>
+    );
   }
 
   return isAuthorized ? children : <Navigate to="/login" replace />;

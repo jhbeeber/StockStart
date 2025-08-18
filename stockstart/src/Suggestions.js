@@ -243,7 +243,7 @@ function Suggestions() {
     }
   };
 
-  if (loading) return <div className="suggestions-loading">Loading...</div>;
+  if (loading) return <div className="suggestions-loading"></div>;
   if (error) return <div className="suggestions-error">{error}</div>;
 
   return (

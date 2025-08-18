@@ -28,6 +28,31 @@
   color: #61dafb;
 }
 
+.protected-loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  pointer-events: all;
+}
+
+.protected-spinner {
+  width: 48px;
+  height: 48px;
+  border: 6px solid #e2e8f0;
+  border-top: 6px solid #00df68;
+  border-radius: 50%;
+  animation: protected-spin 1s linear infinite;
+}
+
+@keyframes protected-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

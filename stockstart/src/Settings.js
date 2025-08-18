@@ -125,7 +125,7 @@ const handleLogout = () => {
     }
   };
 
-  if (loading) return <div className="settings-loading">Loading...</div>;
+  if (loading) return <div className="settings-loading"></div>;
 
   return (
     <div className="settings">
