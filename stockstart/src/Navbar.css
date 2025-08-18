@@ -52,6 +52,21 @@
   height: 3px;
   background-color: #004d24;
   transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.hamburger {
+  gap: 5px;
+}
+
+.hamburger.active .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 6px);
+}
+.hamburger.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -6px);
 }
 
 .nav-links {
@@ -125,6 +140,17 @@
     display: flex;
   }
 
+  .hamburger {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+  }
+
   .nav-links {
     display: none;
     position: fixed;
@@ -145,15 +171,44 @@
 
   .nav-links.show {
     display: flex;
+    animation: slideDown 0.3s ease-out forwards;
   }
 
   .nav-links a {
     font-size: 1.25rem;
     padding: 0.5rem 0;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
   }
 
   .login-btn, .settings-btn {
     width: 200px;
     text-align: center;
+  }
+
+  .nav-links.show a:nth-child(1) { animation-delay: 0.1s; }
+  .nav-links.show a:nth-child(2) { animation-delay: 0.2s; }
+  .nav-links.show a:nth-child(3) { animation-delay: 0.3s; }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

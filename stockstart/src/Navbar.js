@@ -22,7 +22,7 @@ function Navbar() {
         <span>Stock</span><span className="logo-accent">Start</span>
       </Link>
       
-      <button className="hamburger" onClick={toggleMenu}>
+  <button className={`hamburger${isMenuOpen ? ' active' : ''}`} onClick={toggleMenu}>
         <span className="hamburger-line"></span>
         <span className="hamburger-line"></span>
         <span className="hamburger-line"></span>
