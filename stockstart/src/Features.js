@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Navbar from './Navbar';
-import './Features.css';
+import './About.css';
 
 function Features() {
   useEffect(() => {
@@ -11,79 +11,93 @@ function Features() {
         }
       });
     });
-
     document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
   }, []);
+  
+  const mainFeatures = [
+    {
+      icon: "📊",
+      title: "Smart Analytics Dashboard",
+      desc: "Track your investments with our intuitive dashboard featuring real-time market trends, personalized stock recommendations, end-of-day price updates, and 5-year historical performance data."
+    },
+    {
+      icon: "🎯",
+      title: "Goal-Based Investment Planning",
+      desc: "Set and achieve your financial goals with customized investment strategies, progress tracking, risk assessment tools, and portfolio diversification guidance."
+    }
+  ];
+
+  const additionalFeatures = [
+    {
+      icon: "📱",
+      title: "Mobile Responsive",
+      desc: "Access your portfolio and make decisions on any device, anywhere, anytime."
+    },
+    {
+      icon: "🔒",
+      title: "Secure Platform",
+      desc: "Enterprise-grade security to protect your data and investment suggestions."
+    },
+    {
+      icon: "📈",
+      title: "Performance Tracking",
+      desc: "Monitor your portfolio's performance with detailed analytics."
+    },
+    {
+      icon: "📚",
+      title: "Educational Resources",
+      desc: "Learn and grow with our comprehensive investment guides."
+    }
+  ];
 
   return (
-    <div className="features-page">
+    <div className="about">
       <Navbar />
-      <main className="features-content">
-        <div className="features-hero">
-          <h1>Powerful <span className="gradient-text">Features</span></h1>
-          <p className="features-description">
+      <main className="about-content">
+        <div className="about-hero loaded">
+          <h1>
+            <span className="about-black">Features of </span>
+            <span className="gradient-text">StockStart</span>
+          </h1>
+          <p className="about-description">
             Discover the tools and capabilities that make StockStart your perfect companion in your investment journey. Our platform combines simplicity with powerful analytics to help you make informed decisions.
           </p>
         </div>
-
-        <section className="feature-sections">
-          <div className="feature-section fade-in">
-            <div className="feature-image-left">
-              <div className="feature-icon-large">📊</div>
+        <section className="about-details">
+          {mainFeatures.map((feature) => (
+            <div className="about-card fade-in" key={feature.title}>
+              <div className="card-icon pulse" style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>
+                {feature.icon}
+              </div>
+              <h2>{feature.title}</h2>
+              <p>{feature.desc}</p>
             </div>
-            <div className="feature-content-right">
-              <h2>Smart Analytics Dashboard</h2>
-              <p>Track your investments with our intuitive dashboard featuring:</p>
-              <ul>
-                <li>Real-time market trends and analysis</li>
-                <li>Personalized stock recommendations</li>
-                <li>End-of-day price updates</li>
-                <li>5 year historical performance data</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="feature-section reverse fade-in">
-            <div className="feature-content-left">
-              <h2>Goal-Based Investment Planning</h2>
-              <p>Set and achieve your financial goals with:</p>
-              <ul>
-                <li>Customized investment strategies</li>
-                <li>Progress tracking and milestones</li>
-                <li>Risk assessment tools</li>
-                <li>Portfolio diversification guidance</li>
-              </ul>
-            </div>
-            <div className="feature-image-right">
-              <div className="feature-icon-large">🎯</div>
-            </div>
-          </div>
+          ))}
         </section>
-
-        <section className="feature-grid-section">
-          <h2 className="fade-in">Additional Features</h2>
-          <div className="features-grid">
-            <div className="feature-card fancy fade-in">
-              <div className="card-icon">📱</div>
-              <h3>Mobile Responsive</h3>
-              <p>Access your portfolio and make decisions on any device, anywhere, anytime</p>
-            </div>
-            <div className="feature-card fancy fade-in">
-              <div className="card-icon">🔒</div>
-              <h3>Secure Platform</h3>
-              <p>Enterprise-grade security to protect your data and investment suggestions</p>
-            </div>
-            <div className="feature-card fancy fade-in">
-              <div className="card-icon">📈</div>
-              <h3>Performance Tracking</h3>
-              <p>Monitor your portfolio's performance with detailed analytics</p>
-            </div>
-            <div className="feature-card fancy fade-in">
-              <div className="card-icon">🎓</div>
-              <h3>Educational Resources</h3>
-              <p>Learn and grow with our comprehensive investment guides</p>
-            </div>
+        <section className="additional-features-grid">
+          <div style={{
+            gridColumn: "1 / -1",
+            textAlign: "center",
+            marginBottom: "2rem"
+          }}>
+            <h2 style={{
+              color: "#000000ff",
+              fontSize: "2rem",
+              fontWeight: 700,
+              margin: 0
+            }}>
+              Additional Features
+            </h2>
           </div>
+          {additionalFeatures.map((feature) => (
+            <div className="about-card fade-in" key={feature.title}>
+              <div className="card-icon" style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>
+                {feature.icon}
+              </div>
+              <h3 style={{ marginBottom: "0.5rem" }}>{feature.title}</h3>
+              <p>{feature.desc}</p>
+            </div>
+          ))}
         </section>
       </main>
     </div>
